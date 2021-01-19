@@ -7,10 +7,10 @@ This project demonstrates a simple microservice implemented with following techn
 - JUnit - Unit tests
 - OpenAPI - Documentation
 
-#Documentation :
+# Documentation :
 The API documentation can be found at : localhost:8080/api-specs
 
-#Running the service locally :
+# Running the service locally :
 - The service runs on port 8080.
 - The service requires a local MongoDB setup.
 
