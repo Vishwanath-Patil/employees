@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
@@ -12,13 +13,17 @@ import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.Objects;
 
-@JsonPropertyOrder({ "_links", "_embedded", "firstName", "lastName", "department", "addresses", "id", "createdAt", "updatedAt"})
+@JsonPropertyOrder({ "_links", "_embedded", "firstName", "lastName", "department",
+        "addresses", "id", "createdAt", "updatedAt"})
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
 @Document(collection = "employees")
-@CompoundIndex(def = "{'firstName':1,'lastName':1, 'department.id':1}", unique = true)
+@CompoundIndexes({
+    @CompoundIndex(name = "firstName_lastName_departmentId",
+            def = "{'firstName':1,'lastName':1, 'department.id':1}", unique = true)
+})
 public class Employee extends AbstractLinkableEntity {
 
     @Id
@@ -46,7 +51,9 @@ public class Employee extends AbstractLinkableEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return firstName.equals(employee.firstName) && lastName.equals(employee.lastName) && department.equals(employee.department) && address.equals(employee.address) && emailAddresses.equals(employee.emailAddresses);
+        return firstName.equals(employee.firstName) && lastName.equals(employee.lastName)
+                && department.equals(employee.department) && address.equals(employee.address)
+                && emailAddresses.equals(employee.emailAddresses);
     }
 
     @Override
